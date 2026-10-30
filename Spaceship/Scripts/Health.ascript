@@ -1,0 +1,52 @@
+// Tracks health and draws a screen-space bar over the owner. When depleted it sends
+// `onDepletedMessage` to the other scripts on the owner (e.g. fn OnDestroy()).
+component Health : GUI {
+    @field("Max Health")           float maxHealth = 100.0;
+    @field("Show Health Bar")      bool  showHealthBar = true;
+    @field("Bar Height Offset")    float barHeightOffset = 1.5;
+    @field("Bar Width (px)")       float barWidth = 60.0;
+    @field("On Depleted Message")  string onDepletedMessage = "OnDestroy";
+
+    float currentHealth = -1.0; // lazily initialised to max health
+    bool depleted = false;
+
+    fn GetCurrentHealth(): float {
+        if (currentHealth < 0.0) { currentHealth = maxHealth; }
+        return currentHealth;
+    }
+
+    fn GetMaxHealth(): float { return maxHealth; }
+
+    fn IsDepleted(): bool { return depleted; }
+
+    // Returns true if this hit depleted the health.
+    fn TakeDamage(amount: float): bool {
+        if (depleted || amount <= 0.0) { return false; }
+        currentHealth = Mathf.max(0.0, GetCurrentHealth() - amount);
+        if (currentHealth > 0.0) { return false; }
+        depleted = true;
+        owner.sendMessage(onDepletedMessage);
+        return true;
+    }
+
+    fn Heal(amount: float) {
+        if (depleted || amount <= 0.0) { return; }
+        currentHealth = Mathf.min(maxHealth, GetCurrentHealth() + amount);
+    }
+
+    on GUI(dt) {
+        if (!showHealthBar || depleted) { return; }
+
+        let screen = Gui.worldToScreen(owner.transform.position + vec3(0.0, barHeightOffset, 0.0));
+        if (screen.z < 0.0) { return; }
+
+        let barHeight = 6.0;
+        let fraction = Mathf.clamp01(GetCurrentHealth() / Mathf.max(maxHealth, 0.0001));
+        let topLeft = vec3(screen.x - barWidth * 0.5, screen.y - barHeight * 0.5, 0.0);
+        let bottomRight = vec3(screen.x + barWidth * 0.5, screen.y + barHeight * 0.5, 0.0);
+
+        Gui.fillRect(topLeft, bottomRight, vec3(0.08, 0.08, 0.08), 0.8);
+        Gui.fillRect(topLeft, vec3(topLeft.x + barWidth * fraction, bottomRight.y, 0.0), vec3(1.0 - fraction, 0.86 * fraction, 0.16), 1.0);
+        Gui.drawRect(topLeft, bottomRight, vec3(0.0, 0.0, 0.0), 1.0, 1.0);
+    }
+}

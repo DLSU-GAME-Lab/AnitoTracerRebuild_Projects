@@ -1,0 +1,71 @@
+// Smoothly follows a target transform with a positional offset; attach to the camera object.
+component CinematicCameraFollower : Update {
+    @field("Target")                 transform target;
+    // Offset in the target's local space, so the camera stays behind the target as it turns.
+    @field("Target Offset")          vec3  targetOffset = vec3(0.0, 2.0, -8.0);
+    // Offset in the target's local space that the camera looks at.
+    @field("Look At Offset")         vec3  lookAtOffset = vec3(0.0, 0.0, 10.0);
+    @field("Match Target Rotation")  bool  matchTargetRotation = false;
+    // Higher is snappier; 0 disables smoothing (instant snap).
+    @field("Position Smoothness")    float positionSmoothness = 6.0;
+    @field("Rotation Smoothness")    float rotationSmoothness = 4.0;
+    // Fraction of the target's roll copied to the camera (0 = level horizon, 1 = full roll).
+    @field("Roll Influence")         float rollInfluence = 0.25;
+    // Max distance the camera may lag behind its ideal position; 0 = unlimited.
+    @field("Max Lag Distance")       float maxLagDistance = 0.0;
+    @field("Snap On Start")          bool  snapOnStart = true;
+
+    bool initialized = false;
+
+    // Frame-rate independent exponential smoothing factor.
+    fn Blend(smoothness: float, dt: float): float {
+        if (smoothness <= 0.0) { return 1.0; }
+        return 1.0 - Mathf.exp(-smoothness * dt);
+    }
+
+    on Update(dt) {
+        if (!target.valid()) { return; }
+
+        let camera = owner.transform;
+        let targetPos = target.position;
+        let targetRot = target.rotation;
+        let desiredPos = targetPos + targetRot * targetOffset;
+        let desiredRot = camera.rotation;
+
+        if (matchTargetRotation) {
+            desiredRot = targetRot;
+        } else {
+            let lookPoint = targetPos + targetRot * lookAtOffset;
+            let toLook = lookPoint - desiredPos;
+            if (toLook.lengthSq >= 0.00000001) {
+                let forward = toLook.normalized;
+                // Blend between world-up (level horizon) and target-up (full roll).
+                let targetUp = targetRot * vec3(0.0, 1.0, 0.0);
+                let up = Vector3.lerp(Vector3.up, targetUp, Mathf.clamp01(rollInfluence));
+                if (Mathf.abs(up.normalized.dot(forward)) > 0.999) { up = targetUp; }
+                desiredRot = Quaternion.lookRotation(forward, up.normalized);
+            }
+        }
+
+        if (!initialized) {
+            initialized = true;
+            if (snapOnStart) {
+                camera.position = desiredPos;
+                camera.rotation = desiredRot;
+                return;
+            }
+        }
+
+        let newPos = Vector3.lerp(camera.position, desiredPos, Blend(positionSmoothness, dt));
+        if (maxLagDistance > 0.0) {
+            let lag = newPos - desiredPos;
+            let lagLength = lag.length;
+            if (lagLength > maxLagDistance) {
+                newPos = desiredPos + lag * (maxLagDistance / lagLength);
+            }
+        }
+        let newRot = Quaternion.slerp(camera.rotation, desiredRot, Blend(rotationSmoothness, dt)).normalized;
+        camera.position = newPos;
+        camera.rotation = newRot;
+    }
+}

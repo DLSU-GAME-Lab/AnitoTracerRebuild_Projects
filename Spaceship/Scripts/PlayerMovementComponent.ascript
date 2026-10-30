@@ -1,0 +1,62 @@
+// Physics for the flying ship. Input is supplied by PlayerController through SetInput().
+component PlayerMovementComponent : FixedUpdate {
+    @field("Forward Speed")   float forwardSpeed = 20.0;
+    @field("Reverse Speed")   float reverseSpeed = 8.0;
+    @field("Pitch Torque")    float pitchTorque = 2.0;
+    @field("Roll Torque")     float rollTorque = 2.0;
+    @field("Yaw Torque")      float yawTorque = 2.0;
+    @field("Angular Damping") float angularDamping = 1.5;
+    @field("Acceleration")    float acceleration = 30.0;
+    @field("Deceleration")    float deceleration = 20.0;
+
+    float inThrust = 0.0;
+    float inPitch = 0.0;
+    float inRoll = 0.0;
+    float inYaw = 0.0;
+
+    fn SetInput(thrust: float, pitch: float, roll: float, yaw: float) {
+        inThrust = thrust;
+        inPitch = pitch;
+        inRoll = roll;
+        inYaw = yaw;
+    }
+
+    on FixedUpdate(dt) {
+        let rb = owner.rigidbody;
+        if (!rb.valid()) { return; }
+        if (!rb.simulated) { return; }
+        if (rb.mass <= 0.0) { return; }
+
+        let thrust = Mathf.clamp(inThrust, -1.0, 1.0);
+        let pitch = Mathf.clamp(inPitch, -1.0, 1.0);
+        let roll = Mathf.clamp(inRoll, -1.0, 1.0);
+        let yaw = Mathf.clamp(inYaw, -1.0, 1.0);
+
+        let rotation = rb.rotation;
+        let forward = rotation * vec3(0.0, 0.0, 1.0);
+        let thrustSpeed = reverseSpeed;
+        if (thrust > 0.0) { thrustSpeed = forwardSpeed; }
+        let targetVelocity = forward * (thrust * thrustSpeed);
+
+        // Accelerate when thrusting, brake otherwise.
+        let velocity = rb.velocity;
+        let delta = targetVelocity - velocity;
+        let deltaLength = delta.length;
+        let rate = deceleration;
+        if (Mathf.abs(thrust) > 0.0001) { rate = acceleration; }
+        let maxStep = rate * dt;
+        if (deltaLength <= maxStep || deltaLength < 0.0001) {
+            rb.velocity = targetVelocity;
+        } else {
+            rb.velocity = velocity + delta * (maxStep / deltaLength);
+        }
+
+        let localTorque = vec3(-pitch * pitchTorque, yaw * yawTorque, roll * rollTorque);
+        let controlTorque = rotation * localTorque;
+        let dampingTorque = -rb.angularVelocity * angularDamping;
+        rb.addTorque(controlTorque + dampingTorque);
+
+        // Cancel world gravity so the ship hovers.
+        rb.addForce(-Physics.gravity * rb.mass);
+    }
+}

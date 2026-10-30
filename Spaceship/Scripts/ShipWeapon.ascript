@@ -1,0 +1,40 @@
+component ShipWeapon : Update {
+    @field("Damage")                   float damage = 10.0;
+    @field("Projectile Speed")         float projectileSpeed = 60.0;
+    @field("Projectile Lifetime (s)")  float projectileLifetime = 5.0;
+    @field("Projectile Scale")         float projectileScale = 0.3;
+    @field("Fire Interval (s)")        float fireInterval = 0.2;
+    @field("Muzzle Offset")            vec3  muzzleOffset = vec3(0.0, 0.0, 1.5);
+
+    float cooldown = 0.0;
+
+    on Update(dt) {
+        cooldown = Mathf.max(0.0, cooldown - dt);
+    }
+
+    // Fires one projectile if the cooldown allows.
+    @method fn Shoot() {
+        if (cooldown > 0.0) { return; }
+
+        let ownerTransform = owner.transform;
+        let rotation = ownerTransform.rotation;
+        let forward = rotation * vec3(0.0, 0.0, 1.0);
+
+        let projectile = Scene.createPrimitive("sphere", Scene.none);
+        projectile.name = "Projectile";
+        projectile.transform.position = ownerTransform.position + rotation * muzzleOffset;
+        projectile.transform.localScale = vec3(projectileScale, projectileScale, projectileScale);
+
+        let projectileScript = projectile.addScript("ShipProjectile");
+        projectileScript.call("Launch", forward, projectileSpeed, damage, projectileLifetime, owner);
+
+        // The rigidbody must exist before the collider so the collider attaches to it.
+        projectile.addRigidbody(1.0);
+        projectile.addSphereCollider(1.0);
+
+        cooldown = fireInterval;
+
+        let audio = owner.audioSource;
+        if (audio.valid()) { audio.play(); }
+    }
+}

@@ -1,0 +1,26 @@
+// Obstacle that cancels world gravity so it hovers in place, slowly tumbling.
+component FloatingAsteroid : FixedUpdate {
+    @field("Tumble Speed (rad/s)") vec3 tumbleSpeed = vec3(0.1, 0.2, 0.05);
+
+    bool tumbleApplied = false;
+
+    // Called by Health when this asteroid is destroyed.
+    @method fn OnDestroy() {
+        let audio = owner.audioSource;
+        if (audio.valid()) { audio.playDetached(); }
+        owner.destroy();
+    }
+
+    on FixedUpdate(dt) {
+        let rb = owner.rigidbody;
+        if (!rb.valid()) { return; }
+        if (!rb.simulated) { return; }
+        if (rb.mass <= 0.0) { return; }
+
+        if (!tumbleApplied) {
+            rb.angularVelocity = tumbleSpeed;
+            tumbleApplied = true;
+        }
+        rb.addForce(-Physics.gravity * rb.mass);
+    }
+}
