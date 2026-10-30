@@ -57,6 +57,6 @@ component PlayerMovementComponent : FixedUpdate {
         rb.addTorque(controlTorque + dampingTorque);
 
         // Cancel world gravity so the ship hovers.
-        rb.addForce(-Physics.gravity * rb.mass);
+        rb.addForce(-rb.worldGravity * rb.mass);
     }
 }

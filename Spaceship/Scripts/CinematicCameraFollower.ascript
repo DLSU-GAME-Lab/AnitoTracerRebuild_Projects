@@ -26,11 +26,11 @@ component CinematicCameraFollower : Update {
     on Update(dt) {
         if (!target.valid()) { return; }
 
-        let camera = owner.transform;
+        let cameraTransform = owner.transform;
         let targetPos = target.position;
         let targetRot = target.rotation;
         let desiredPos = targetPos + targetRot * targetOffset;
-        let desiredRot = camera.rotation;
+        let desiredRot = cameraTransform.rotation;
 
         if (matchTargetRotation) {
             desiredRot = targetRot;
@@ -50,13 +50,13 @@ component CinematicCameraFollower : Update {
         if (!initialized) {
             initialized = true;
             if (snapOnStart) {
-                camera.position = desiredPos;
-                camera.rotation = desiredRot;
+                cameraTransform.position = desiredPos;
+                cameraTransform.rotation = desiredRot;
                 return;
             }
         }
 
-        let newPos = Vector3.lerp(camera.position, desiredPos, Blend(positionSmoothness, dt));
+        let newPos = Vector3.lerp(cameraTransform.position, desiredPos, Blend(positionSmoothness, dt));
         if (maxLagDistance > 0.0) {
             let lag = newPos - desiredPos;
             let lagLength = lag.length;
@@ -64,8 +64,8 @@ component CinematicCameraFollower : Update {
                 newPos = desiredPos + lag * (maxLagDistance / lagLength);
             }
         }
-        let newRot = Quaternion.slerp(camera.rotation, desiredRot, Blend(rotationSmoothness, dt)).normalized;
-        camera.position = newPos;
-        camera.rotation = newRot;
+        let newRot = Quaternion.slerp(cameraTransform.rotation, desiredRot, Blend(rotationSmoothness, dt)).normalized;
+        cameraTransform.position = newPos;
+        cameraTransform.rotation = newRot;
     }
 }

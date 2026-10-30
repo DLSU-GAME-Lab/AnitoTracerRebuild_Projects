@@ -21,6 +21,6 @@ component FloatingAsteroid : FixedUpdate {
             rb.angularVelocity = tumbleSpeed;
             tumbleApplied = true;
         }
-        rb.addForce(-Physics.gravity * rb.mass);
+        rb.addForce(-rb.worldGravity * rb.mass);
     }
 }

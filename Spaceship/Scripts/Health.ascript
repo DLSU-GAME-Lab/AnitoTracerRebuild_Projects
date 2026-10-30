@@ -36,6 +36,8 @@ component Health : GUI {
 
     on GUI(dt) {
         if (!showHealthBar || depleted) { return; }
+        let activeCamera = Scene.mainCamera().camera;
+        if (!activeCamera.valid()) { return; }
 
         let screen = Gui.worldToScreen(owner.transform.position + vec3(0.0, barHeightOffset, 0.0));
         if (screen.z < 0.0) { return; }

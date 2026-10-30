@@ -47,7 +47,7 @@ public:
             }
         }
 #line 29 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
-        anito::Transform camera = gameObject.transform();
+        anito::Transform cameraTransform = gameObject.transform();
 #line 30 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         anito::Vec3 targetPos = anito::ResolveTransformField(_f_target).position();
 #line 31 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
@@ -55,7 +55,7 @@ public:
 #line 32 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         anito::Vec3 desiredPos = (targetPos + (targetRot * targetOffset));
 #line 33 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
-        anito::Quat desiredRot = camera.rotation();
+        anito::Quat desiredRot = cameraTransform.rotation();
 #line 35 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         if (matchTargetRotation) {
             {
@@ -99,9 +99,9 @@ public:
                 if (snapOnStart) {
                     {
 #line 53 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
-                        camera.setPosition(desiredPos);
+                        cameraTransform.setPosition(desiredPos);
 #line 54 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
-                        camera.setRotation(desiredRot);
+                        cameraTransform.setRotation(desiredRot);
 #line 55 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                         return;
                     }
@@ -109,7 +109,7 @@ public:
             }
         }
 #line 59 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
-        anito::Vec3 newPos = anito::Vector3::lerp(camera.position(), desiredPos, Blend(positionSmoothness, dt));
+        anito::Vec3 newPos = anito::Vector3::lerp(cameraTransform.position(), desiredPos, Blend(positionSmoothness, dt));
 #line 60 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         if ((maxLagDistance > 0.0f)) {
             {
@@ -127,11 +127,11 @@ public:
             }
         }
 #line 67 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
-        anito::Quat newRot = anito::Quaternion::slerp(camera.rotation(), desiredRot, Blend(rotationSmoothness, dt)).normalized();
+        anito::Quat newRot = anito::Quaternion::slerp(cameraTransform.rotation(), desiredRot, Blend(rotationSmoothness, dt)).normalized();
 #line 68 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
-        camera.setPosition(newPos);
+        cameraTransform.setPosition(newPos);
 #line 69 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
-        camera.setRotation(newRot);
+        cameraTransform.setRotation(newRot);
     }
 
     bool Invoke(const char* method) override {
@@ -346,7 +346,7 @@ public:
             }
         }
 #line 24 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
-        rb.addForce(((-anito::Physics::gravity()) * rb.mass()));
+        rb.addForce(((-rb.worldGravity()) * rb.mass()));
     }
 
     bool Invoke(const char* method) override {
@@ -452,28 +452,37 @@ public:
                 return;
             }
         }
+#line 39 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+        anito::Camera activeCamera = anito::Scene::mainCamera().camera();
 #line 40 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
-        anito::Vec3 screen = anito::Gui::worldToScreen((gameObject.transform().position() + anito::Vec3{static_cast<float>(0.0f), static_cast<float>(barHeightOffset), static_cast<float>(0.0f)}));
-#line 41 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
-        if ((screen.z < 0.0f)) {
+        if ((!activeCamera.valid())) {
             {
-#line 41 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 40 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
                 return;
             }
         }
+#line 42 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+        anito::Vec3 screen = anito::Gui::worldToScreen((gameObject.transform().position() + anito::Vec3{static_cast<float>(0.0f), static_cast<float>(barHeightOffset), static_cast<float>(0.0f)}));
 #line 43 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
-        float barHeight = 6.0f;
-#line 44 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
-        float fraction = anito::Mathf::clamp01((GetCurrentHealth() / anito::Mathf::max(maxHealth, 0.0001f)));
+        if ((screen.z < 0.0f)) {
+            {
+#line 43 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+                return;
+            }
+        }
 #line 45 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
-        anito::Vec3 topLeft = anito::Vec3{static_cast<float>((screen.x - (barWidth * 0.5f))), static_cast<float>((screen.y - (barHeight * 0.5f))), static_cast<float>(0.0f)};
+        float barHeight = 6.0f;
 #line 46 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
-        anito::Vec3 bottomRight = anito::Vec3{static_cast<float>((screen.x + (barWidth * 0.5f))), static_cast<float>((screen.y + (barHeight * 0.5f))), static_cast<float>(0.0f)};
+        float fraction = anito::Mathf::clamp01((GetCurrentHealth() / anito::Mathf::max(maxHealth, 0.0001f)));
+#line 47 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+        anito::Vec3 topLeft = anito::Vec3{static_cast<float>((screen.x - (barWidth * 0.5f))), static_cast<float>((screen.y - (barHeight * 0.5f))), static_cast<float>(0.0f)};
 #line 48 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
-        anito::Gui::fillRect(topLeft, bottomRight, anito::Vec3{static_cast<float>(0.08f), static_cast<float>(0.08f), static_cast<float>(0.08f)}, 0.8f);
-#line 49 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
-        anito::Gui::fillRect(topLeft, anito::Vec3{static_cast<float>((topLeft.x + (barWidth * fraction))), static_cast<float>(bottomRight.y), static_cast<float>(0.0f)}, anito::Vec3{static_cast<float>((1.0f - fraction)), static_cast<float>((0.86f * fraction)), static_cast<float>(0.16f)}, 1.0f);
+        anito::Vec3 bottomRight = anito::Vec3{static_cast<float>((screen.x + (barWidth * 0.5f))), static_cast<float>((screen.y + (barHeight * 0.5f))), static_cast<float>(0.0f)};
 #line 50 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+        anito::Gui::fillRect(topLeft, bottomRight, anito::Vec3{static_cast<float>(0.08f), static_cast<float>(0.08f), static_cast<float>(0.08f)}, 0.8f);
+#line 51 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+        anito::Gui::fillRect(topLeft, anito::Vec3{static_cast<float>((topLeft.x + (barWidth * fraction))), static_cast<float>(bottomRight.y), static_cast<float>(0.0f)}, anito::Vec3{static_cast<float>((1.0f - fraction)), static_cast<float>((0.86f * fraction)), static_cast<float>(0.16f)}, 1.0f);
+#line 52 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         anito::Gui::drawRect(topLeft, bottomRight, anito::Vec3{static_cast<float>(0.0f), static_cast<float>(0.0f), static_cast<float>(0.0f)}, 1.0f, 1.0f);
     }
 
@@ -728,7 +737,7 @@ public:
 #line 57 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         rb.addTorque((controlTorque + dampingTorque));
 #line 60 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
-        rb.addForce(((-anito::Physics::gravity()) * rb.mass()));
+        rb.addForce(((-rb.worldGravity()) * rb.mass()));
     }
 
     bool Invoke(const char* method) override {
