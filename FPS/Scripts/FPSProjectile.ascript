@@ -1,0 +1,46 @@
+component FPSProjectile : Update, FixedUpdate, CollisionEnter {
+    vec3 direction = vec3(0.0, 0.0, 1.0);
+    float speed = 0.0;
+    float damage = 0.0;
+    float expiresAt = 0.0;
+    bool spent = false;
+    gameobject instigator;
+
+    fn Launch(dir: vec3, projectileSpeed: float, projectileDamage: float, lifetime: float, shooter: gameobject) {
+        direction = dir.normalized;
+        speed = projectileSpeed;
+        damage = projectileDamage;
+        expiresAt = Time.time + lifetime;
+        instigator = shooter;
+    }
+
+    on FixedUpdate(dt) {
+        let rb = owner.rigidbody;
+        if (rb.valid()) { rb.velocity = direction * speed; }
+    }
+
+    on CollisionEnter(other) {
+        if (spent || !other.valid() || other == owner) { return; }
+        if (instigator.valid() && other.root == instigator.root) { return; }
+        if (other.hasScript("FPSProjectile")) { return; }
+
+        let current = other;
+        while (current.valid()) {
+            if (current.hasScript("Health")) {
+                let health = current.getScript("Health");
+                if (!health.callBool("IsDepleted")) { health.call("TakeDamage", damage); }
+                break;
+            }
+            current = current.parent;
+        }
+        spent = true;
+        owner.destroy();
+    }
+
+    on Update(dt) {
+        if (!spent && Time.time >= expiresAt) {
+            spent = true;
+            owner.destroy();
+        }
+    }
+}

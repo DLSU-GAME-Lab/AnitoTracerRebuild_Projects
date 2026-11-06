@@ -1,0 +1,53 @@
+component FPSMovement : Update, FixedUpdate {
+    @field("Camera") transform viewCamera;
+    @field("Move Speed") float moveSpeed = 5.0;
+    @field("Jump Speed") float jumpSpeed = 5.0;
+    @field("Look Speed") float lookSpeed = 90.0;
+    @field("Eye Height") float eyeHeight = 0.65;
+    @field("Ground Check Distance") float groundCheckDistance = 1.0;
+
+    float moveForward = 0.0;
+    float moveRight = 0.0;
+    float lookHorizontal = 0.0;
+    float lookVertical = 0.0;
+    float yaw = 0.0;
+    float pitch = 0.0;
+    bool jumpHeld = false;
+    bool jumpQueued = false;
+
+    fn SetInput(forward: float, right: float, horizontal: float, vertical: float, jump: bool) {
+        moveForward = forward;
+        moveRight = right;
+        lookHorizontal = horizontal;
+        lookVertical = vertical;
+        if (jump && !jumpHeld) { jumpQueued = true; }
+        jumpHeld = jump;
+    }
+
+    on Update(dt) {
+        if (viewCamera.valid()) {
+            viewCamera.position = owner.transform.position + vec3(0.0, eyeHeight, 0.0);
+            viewCamera.rotation = Quaternion.euler(vec3(pitch, yaw, 0.0));
+        }
+    }
+
+    on FixedUpdate(dt) {
+        yaw += lookHorizontal * lookSpeed * dt;
+        pitch = Mathf.clamp(pitch + lookVertical * lookSpeed * dt, -85.0, 85.0);
+
+        let rb = owner.rigidbody;
+        if (!rb.valid() || !rb.simulated) { return; }
+
+        let direction = vec3(moveRight, 0.0, moveForward);
+        if (direction.lengthSq > 1.0) { direction = direction.normalized; }
+        let movement = Quaternion.euler(vec3(0.0, yaw, 0.0)) * direction * moveSpeed;
+        let velocity = rb.velocity;
+
+        if (jumpQueued) {
+            let ground = rb.raycast(owner.transform.position, vec3(0.0, -1.0, 0.0), groundCheckDistance);
+            if (ground.hit && velocity.y <= 0.1) { velocity = vec3(velocity.x, jumpSpeed, velocity.z); }
+            jumpQueued = false;
+        }
+        rb.velocity = vec3(movement.x, velocity.y, movement.z);
+    }
+}
