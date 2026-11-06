@@ -471,7 +471,7 @@ public:
             }
         }
 #line 45 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
-        float barHeight = 6.0f;
+        float barHeight = 4.0f;
 #line 46 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         float fraction = anito::Mathf::clamp01((GetCurrentHealth() / anito::Mathf::max(maxHealth, 0.0001f)));
 #line 47 "C:/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"

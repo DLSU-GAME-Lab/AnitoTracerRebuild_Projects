@@ -15,7 +15,7 @@ component SpinAndBob : Update {
         if (!enabled) { return; }
         time = time + dt;
         owner.transform.rotate(spinAxis, spinSpeed * dt);
-        owner.transform.position.y = baseY + cos(time * bobFrequency) * bobHeight;
+        owner.transform.position.y = baseY + sin(time * bobFrequency) * bobHeight;
     }
 
     @method fn resetTime() {

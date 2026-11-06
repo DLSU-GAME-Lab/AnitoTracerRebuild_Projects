@@ -42,7 +42,7 @@ component Health : GUI {
         let screen = Gui.worldToScreen(owner.transform.position + vec3(0.0, barHeightOffset, 0.0));
         if (screen.z < 0.0) { return; }
 
-        let barHeight = 6.0;
+        let barHeight = 4.0;
         let fraction = Mathf.clamp01(GetCurrentHealth() / Mathf.max(maxHealth, 0.0001));
         let topLeft = vec3(screen.x - barWidth * 0.5, screen.y - barHeight * 0.5, 0.0);
         let bottomRight = vec3(screen.x + barWidth * 0.5, screen.y + barHeight * 0.5, 0.0);
