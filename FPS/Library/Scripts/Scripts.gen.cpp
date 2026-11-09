@@ -498,6 +498,443 @@ private:
     float nextShotTime = 0.0f;
 };
 
+class FloatingTarget final : public anito::ScriptBehaviour {
+public:
+    explicit FloatingTarget(const anito::ScriptContext& ctx)
+        : anito::ScriptBehaviour(ctx),
+          tumbleSpeed(*static_cast<anito::Vec3*>(ctx.fields[0])),
+          playDestructionSound(*static_cast<bool*>(ctx.fields[1])) {}
+
+#line 9 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+    void OnDestroy() {
+#line 10 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+        if (playDestructionSound) {
+            {
+#line 11 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+                anito::AudioSource audio = gameObject.audioSource();
+#line 12 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+                if (audio.valid()) {
+                    {
+#line 12 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+                        audio.playDetached();
+                    }
+                }
+            }
+        }
+#line 14 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+        gameObject.destroy();
+    }
+
+#line 17 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+    void OnFixedUpdate(float dt) override {
+        (void)dt;
+#line 18 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+        anito::Rigidbody rb = gameObject.rigidbody();
+#line 19 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+        if ((!rb.valid())) {
+            {
+#line 19 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+                return;
+            }
+        }
+#line 20 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+        if ((!rb.simulated())) {
+            {
+#line 20 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+                return;
+            }
+        }
+#line 21 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+        if ((rb.mass() <= 0.0f)) {
+            {
+#line 21 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+                return;
+            }
+        }
+#line 23 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+        if ((!tumbleApplied)) {
+            {
+#line 24 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+                rb.setAngularVelocity(tumbleSpeed);
+#line 25 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+                tumbleApplied = true;
+            }
+        }
+#line 29 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTarget.ascript"
+        rb.addForce(((-rb.worldGravity()) * rb.mass()));
+    }
+
+    bool Invoke(const char* method) override {
+        (void)method;
+        if (std::strcmp(method, "OnDestroy") == 0) { OnDestroy(); return true; }
+        return false;
+    }
+
+    bool Call(const char* method, const anito::Variant* args, uint32_t argc, anito::Variant* ret) override {
+        (void)method; (void)args; (void)argc; (void)ret;
+        if (std::strcmp(method, "OnDestroy") == 0 && argc == 0) { OnDestroy(); return true; }
+        return false;
+    }
+
+private:
+    anito::Vec3& tumbleSpeed;
+    bool& playDestructionSound;
+    bool tumbleApplied = false;
+};
+
+class FloatingTargetSpawner final : public anito::ScriptBehaviour {
+public:
+    explicit FloatingTargetSpawner(const anito::ScriptContext& ctx)
+        : anito::ScriptBehaviour(ctx),
+          _f_targetPrefab(ctx.fields[0]),
+          count(*static_cast<int*>(ctx.fields[1])),
+          radius(*static_cast<float*>(ctx.fields[2])),
+          surfaceOnly(*static_cast<bool*>(ctx.fields[3])),
+          randomRotation(*static_cast<bool*>(ctx.fields[4])),
+          minScale(*static_cast<float*>(ctx.fields[5])),
+          maxScale(*static_cast<float*>(ctx.fields[6])),
+          spawnOnStart(*static_cast<bool*>(ctx.fields[7])),
+          respawnByWave(*static_cast<bool*>(ctx.fields[8])),
+          waveInterval(*static_cast<float*>(ctx.fields[9])),
+          maxAlive(*static_cast<int*>(ctx.fields[10])),
+          maxWaves(*static_cast<int*>(ctx.fields[11])) {}
+
+#line 20 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+    void OnStart() override {
+#line 21 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        waveTimer = 0.0f;
+#line 22 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        wavesSpawned = 0;
+#line 23 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        spawned.clear();
+#line 24 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        if (spawnOnStart) {
+            {
+#line 24 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                SpawnWave();
+            }
+        }
+    }
+
+#line 27 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+    void OnUpdate(float dt) override {
+        (void)dt;
+#line 28 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        if ((!respawnByWave)) {
+            {
+#line 28 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                return;
+            }
+        }
+#line 29 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        waveTimer += dt;
+#line 30 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        if ((waveTimer < anito::Mathf::max(waveInterval, 0.01f))) {
+            {
+#line 30 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                return;
+            }
+        }
+#line 31 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        waveTimer = 0.0f;
+#line 32 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        SpawnWave();
+    }
+
+#line 36 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+    void SpawnWave() {
+#line 37 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        if ((anito::ResolvePrefabField(_f_targetPrefab).empty() || (count <= 0))) {
+            {
+#line 37 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                return;
+            }
+        }
+#line 38 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        if (((maxWaves > 0) && (wavesSpawned >= maxWaves))) {
+            {
+#line 38 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                return;
+            }
+        }
+#line 40 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        spawned.prune();
+#line 41 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        int toSpawn = count;
+#line 42 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        if ((maxAlive > 0)) {
+            {
+#line 43 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                toSpawn = static_cast<int>(anito::Mathf::min(static_cast<float>(toSpawn), static_cast<float>((maxAlive - spawned.count()))));
+            }
+        }
+#line 45 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        if ((toSpawn <= 0)) {
+            {
+#line 45 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                return;
+            }
+        }
+#line 46 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        wavesSpawned += 1;
+#line 48 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        anito::Vec3 center = gameObject.transform().position();
+#line 49 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        float lowScale = anito::Mathf::min(minScale, maxScale);
+#line 50 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        float highScale = anito::Mathf::max(minScale, maxScale);
+#line 52 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        for (int i = 0; (i < toSpawn); i += 1) {
+            {
+#line 53 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                anito::Vec3 offset = (anito::Random::insideUnitSphere() * radius);
+#line 54 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                if (surfaceOnly) {
+                    {
+#line 54 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                        offset = (anito::Random::onUnitSphere() * radius);
+                    }
+                }
+#line 56 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                anito::GameObject instance = anito::Scene::instantiate(anito::ResolvePrefabField(_f_targetPrefab), anito::Scene::none());
+#line 57 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                if ((!instance.valid())) {
+                    {
+#line 57 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                        return;
+                    }
+                }
+#line 58 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                spawned.add(instance);
+#line 60 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                anito::Transform t = instance.transform();
+#line 61 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                t.setPosition((center + offset));
+#line 62 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                if (randomRotation) {
+                    {
+#line 62 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                        t.setRotation(anito::Random::rotation());
+                    }
+                }
+#line 63 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                if (((highScale != 1.0f) || (lowScale != 1.0f))) {
+                    {
+#line 64 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                        t.setLocalScale((t.localScale() * anito::Random::range(lowScale, highScale)));
+                    }
+                }
+            }
+        }
+    }
+
+#line 70 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+    void DespawnAll() {
+#line 71 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        for (int i = 0; (i < spawned.count()); i += 1) {
+            {
+#line 72 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                anito::GameObject target = spawned[i];
+#line 73 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                if (target.valid()) {
+                    {
+#line 73 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+                        target.destroy();
+                    }
+                }
+            }
+        }
+#line 75 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        spawned.clear();
+    }
+
+#line 79 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+    int GetActiveCount() {
+#line 80 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        spawned.prune();
+#line 81 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/FloatingTargetSpawner.ascript"
+        return spawned.count();
+    }
+
+    bool Invoke(const char* method) override {
+        (void)method;
+        if (std::strcmp(method, "SpawnWave") == 0) { SpawnWave(); return true; }
+        if (std::strcmp(method, "DespawnAll") == 0) { DespawnAll(); return true; }
+        if (std::strcmp(method, "GetActiveCount") == 0) { GetActiveCount(); return true; }
+        return false;
+    }
+
+    bool Call(const char* method, const anito::Variant* args, uint32_t argc, anito::Variant* ret) override {
+        (void)method; (void)args; (void)argc; (void)ret;
+        if (std::strcmp(method, "SpawnWave") == 0 && argc == 0) { SpawnWave(); return true; }
+        if (std::strcmp(method, "DespawnAll") == 0 && argc == 0) { DespawnAll(); return true; }
+        if (std::strcmp(method, "GetActiveCount") == 0 && argc == 0) { if (ret) *ret = anito::Variant::Of(GetActiveCount()); return true; }
+        return false;
+    }
+
+private:
+    void* _f_targetPrefab;
+    int& count;
+    float& radius;
+    bool& surfaceOnly;
+    bool& randomRotation;
+    float& minScale;
+    float& maxScale;
+    bool& spawnOnStart;
+    bool& respawnByWave;
+    float& waveInterval;
+    int& maxAlive;
+    int& maxWaves;
+    anito::Array<anito::GameObject> spawned {};
+    float waveTimer = 0.0f;
+    int wavesSpawned = 0;
+};
+
+class Health final : public anito::ScriptBehaviour {
+public:
+    explicit Health(const anito::ScriptContext& ctx)
+        : anito::ScriptBehaviour(ctx),
+          maxHealth(*static_cast<float*>(ctx.fields[0])),
+          showHealthBar(*static_cast<bool*>(ctx.fields[1])),
+          barHeightOffset(*static_cast<float*>(ctx.fields[2])),
+          barWidth(*static_cast<float*>(ctx.fields[3])),
+          onDepletedMessage(*static_cast<std::string*>(ctx.fields[4])) {}
+
+#line 13 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+    float GetCurrentHealth() {
+#line 14 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        if ((currentHealth < 0.0f)) {
+            {
+#line 14 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+                currentHealth = maxHealth;
+            }
+        }
+#line 15 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        return currentHealth;
+    }
+
+#line 18 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+    float GetMaxHealth() {
+#line 18 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        return maxHealth;
+    }
+
+#line 20 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+    bool IsDepleted() {
+#line 20 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        return depleted;
+    }
+
+#line 23 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+    bool TakeDamage(float amount) {
+        (void)amount;
+#line 24 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        if ((depleted || (amount <= 0.0f))) {
+            {
+#line 24 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+                return false;
+            }
+        }
+#line 25 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        currentHealth = anito::Mathf::max(0.0f, (GetCurrentHealth() - amount));
+#line 26 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        if ((currentHealth > 0.0f)) {
+            {
+#line 26 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+                return false;
+            }
+        }
+#line 27 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        depleted = true;
+#line 28 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        gameObject.sendMessage(onDepletedMessage);
+#line 29 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        return true;
+    }
+
+#line 32 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+    void Heal(float amount) {
+        (void)amount;
+#line 33 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        if ((depleted || (amount <= 0.0f))) {
+            {
+#line 33 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+                return;
+            }
+        }
+#line 34 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        currentHealth = anito::Mathf::min(maxHealth, (GetCurrentHealth() + amount));
+    }
+
+#line 37 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+    void OnGUI(float dt) override {
+        (void)dt;
+#line 38 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        if (((!showHealthBar) || depleted)) {
+            {
+#line 38 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+                return;
+            }
+        }
+#line 39 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        anito::Camera activeCamera = anito::Scene::mainCamera().camera();
+#line 40 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        if ((!activeCamera.valid())) {
+            {
+#line 40 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+                return;
+            }
+        }
+#line 42 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        anito::Vec3 screen = anito::Gui::worldToScreen((gameObject.transform().position() + anito::Vec3{static_cast<float>(0.0f), static_cast<float>(barHeightOffset), static_cast<float>(0.0f)}));
+#line 43 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        if ((screen.z < 0.0f)) {
+            {
+#line 43 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+                return;
+            }
+        }
+#line 45 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        float barHeight = 4.0f;
+#line 46 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        float fraction = anito::Mathf::clamp01((GetCurrentHealth() / anito::Mathf::max(maxHealth, 0.0001f)));
+#line 47 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        anito::Vec3 topLeft = anito::Vec3{static_cast<float>((screen.x - (barWidth * 0.5f))), static_cast<float>((screen.y - (barHeight * 0.5f))), static_cast<float>(0.0f)};
+#line 48 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        anito::Vec3 bottomRight = anito::Vec3{static_cast<float>((screen.x + (barWidth * 0.5f))), static_cast<float>((screen.y + (barHeight * 0.5f))), static_cast<float>(0.0f)};
+#line 50 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        anito::Gui::fillRect(topLeft, bottomRight, anito::Vec3{static_cast<float>(0.08f), static_cast<float>(0.08f), static_cast<float>(0.08f)}, 0.8f);
+#line 51 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        anito::Gui::fillRect(topLeft, anito::Vec3{static_cast<float>((topLeft.x + (barWidth * fraction))), static_cast<float>(bottomRight.y), static_cast<float>(0.0f)}, anito::Vec3{static_cast<float>((1.0f - fraction)), static_cast<float>((0.86f * fraction)), static_cast<float>(0.16f)}, 1.0f);
+#line 52 "C:/repos/AnitoTracerRebuild_Projects/FPS/Scripts/Health.ascript"
+        anito::Gui::drawRect(topLeft, bottomRight, anito::Vec3{static_cast<float>(0.0f), static_cast<float>(0.0f), static_cast<float>(0.0f)}, 1.0f, 1.0f);
+    }
+
+    bool Invoke(const char* method) override {
+        (void)method;
+        return false;
+    }
+
+    bool Call(const char* method, const anito::Variant* args, uint32_t argc, anito::Variant* ret) override {
+        (void)method; (void)args; (void)argc; (void)ret;
+        if (std::strcmp(method, "GetCurrentHealth") == 0 && argc == 0) { if (ret) *ret = anito::Variant::Of(GetCurrentHealth()); return true; }
+        if (std::strcmp(method, "GetMaxHealth") == 0 && argc == 0) { if (ret) *ret = anito::Variant::Of(GetMaxHealth()); return true; }
+        if (std::strcmp(method, "IsDepleted") == 0 && argc == 0) { if (ret) *ret = anito::Variant::Of(IsDepleted()); return true; }
+        if (std::strcmp(method, "TakeDamage") == 0 && argc == 1) { if (ret) *ret = anito::Variant::Of(TakeDamage(args[0].AsFloat())); return true; }
+        if (std::strcmp(method, "Heal") == 0 && argc == 1) { Heal(args[0].AsFloat()); return true; }
+        return false;
+    }
+
+private:
+    float& maxHealth;
+    bool& showHealthBar;
+    float& barHeightOffset;
+    float& barWidth;
+    std::string& onDepletedMessage;
+    float currentHealth = (-1.0f);
+    bool depleted = false;
+};
+
 } // namespace user
 
 namespace {
@@ -506,6 +943,9 @@ const anito::FieldType kFields_FPSInput[] = {anito::FieldType::Transform};
 const anito::FieldType kFields_FPSMovement[] = {anito::FieldType::Transform, anito::FieldType::Float, anito::FieldType::Float, anito::FieldType::Float, anito::FieldType::Float, anito::FieldType::Float};
 const anito::FieldType kFields_FPSProjectile[] = {anito::FieldType::Float};
 const anito::FieldType kFields_FPSWeapon[] = {anito::FieldType::Float, anito::FieldType::Float, anito::FieldType::Float, anito::FieldType::Float, anito::FieldType::Float, anito::FieldType::Vec3};
+const anito::FieldType kFields_FloatingTarget[] = {anito::FieldType::Vec3, anito::FieldType::Bool};
+const anito::FieldType kFields_FloatingTargetSpawner[] = {anito::FieldType::Prefab, anito::FieldType::Int, anito::FieldType::Float, anito::FieldType::Bool, anito::FieldType::Bool, anito::FieldType::Float, anito::FieldType::Float, anito::FieldType::Bool, anito::FieldType::Bool, anito::FieldType::Float, anito::FieldType::Int, anito::FieldType::Int};
+const anito::FieldType kFields_Health[] = {anito::FieldType::Float, anito::FieldType::Bool, anito::FieldType::Float, anito::FieldType::Float, anito::FieldType::String};
 
 const anito::ScriptEntry kEntries[] = {
     {"FPSInput",
@@ -524,9 +964,21 @@ const anito::ScriptEntry kEntries[] = {
      [](const anito::ScriptContext& ctx) -> anito::ScriptBehaviour* { return new user::FPSWeapon(ctx); },
      [](anito::ScriptBehaviour* instance) { delete instance; },
      6, kFields_FPSWeapon},
+    {"FloatingTarget",
+     [](const anito::ScriptContext& ctx) -> anito::ScriptBehaviour* { return new user::FloatingTarget(ctx); },
+     [](anito::ScriptBehaviour* instance) { delete instance; },
+     2, kFields_FloatingTarget},
+    {"FloatingTargetSpawner",
+     [](const anito::ScriptContext& ctx) -> anito::ScriptBehaviour* { return new user::FloatingTargetSpawner(ctx); },
+     [](anito::ScriptBehaviour* instance) { delete instance; },
+     12, kFields_FloatingTargetSpawner},
+    {"Health",
+     [](const anito::ScriptContext& ctx) -> anito::ScriptBehaviour* { return new user::Health(ctx); },
+     [](anito::ScriptBehaviour* instance) { delete instance; },
+     5, kFields_Health},
 };
 
-const anito::ModuleInfo kModule = {ANITO_SCRIPT_ABI_VERSION, 4, kEntries};
+const anito::ModuleInfo kModule = {ANITO_SCRIPT_ABI_VERSION, 7, kEntries};
 
 } // namespace
 
