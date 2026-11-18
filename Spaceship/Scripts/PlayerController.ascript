@@ -1,0 +1,26 @@
+// Reads ship input and forwards it to PlayerMovementComponent and ShipWeapon on the same object.
+component PlayerController : Update {
+    on Update(dt) {
+        let movement = owner.getScript("PlayerMovementComponent");
+        if (movement.valid()) {
+            let thrust = 0.0;
+            let roll = 0.0;
+            let pitch = 0.0;
+            let yaw = 0.0;
+            if (Input.getAction("INPUT_KEY_THRUST_FORWARD")) { thrust += 1.0; }
+            if (Input.getAction("INPUT_KEY_THRUST_BACKWARD")) { thrust -= 1.0; }
+            if (Input.getAction("INPUT_KEY_ROLL_RIGHT")) { roll += 1.0; }
+            if (Input.getAction("INPUT_KEY_ROLL_LEFT")) { roll -= 1.0; }
+            if (Input.getAction("INPUT_KEY_PITCH_UP")) { pitch += 1.0; }
+            if (Input.getAction("INPUT_KEY_PITCH_DOWN")) { pitch -= 1.0; }
+            if (Input.getAction("INPUT_KEY_YAW_RIGHT")) { yaw += 1.0; }
+            if (Input.getAction("INPUT_KEY_YAW_LEFT")) { yaw -= 1.0; }
+            movement.call("SetInput", thrust, pitch, roll, yaw);
+        }
+
+        if (Input.getAction("INPUT_KEY_PRIMARY")) {
+            let weapon = owner.getScript("ShipWeapon");
+            if (weapon.valid()) { weapon.call("Shoot"); }
+        }
+    }
+}
