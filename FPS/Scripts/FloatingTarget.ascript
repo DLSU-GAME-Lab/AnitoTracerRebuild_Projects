@@ -1,0 +1,31 @@
+// A floating target that hovers in place and can be destroyed by FPS projectiles.
+component FloatingTarget : FixedUpdate {
+    @field("Tumble Speed (rad/s)") vec3 tumbleSpeed = vec3(0.15, 0.25, 0.1);
+    @field("Destruction Sound")    bool playDestructionSound = true;
+
+    bool tumbleApplied = false;
+
+    // Called by Health when this target is destroyed.
+    @method fn OnDestroy() {
+        if (playDestructionSound) {
+            let audio = owner.audioSource;
+            if (audio.valid()) { audio.playDetached(); }
+        }
+        owner.destroy();
+    }
+
+    on FixedUpdate(dt) {
+        let rb = owner.rigidbody;
+        if (!rb.valid()) { return; }
+        if (!rb.simulated) { return; }
+        if (rb.mass <= 0.0) { return; }
+
+        if (!tumbleApplied) {
+            rb.angularVelocity = tumbleSpeed;
+            tumbleApplied = true;
+        }
+        
+        // Cancel gravity to keep target floating
+        rb.addForce(-rb.worldGravity * rb.mass);
+    }
+}

@@ -1,0 +1,83 @@
+// Spawns floating targets at random positions inside a sphere for target practice.
+component FloatingTargetSpawner : Start, Update {
+    @field("Target Prefab")                 prefab targetPrefab;
+    @field("Count")                         int    count = 10;
+    @field("Spawn Radius")                  float  radius = 25.0;
+    @field("Surface Only")                  bool   surfaceOnly = false;
+    @field("Random Rotation")               bool   randomRotation = true;
+    @field("Min Scale")                     float  minScale = 0.8;
+    @field("Max Scale")                     float  maxScale = 1.2;
+    @field("Spawn On Start")                bool   spawnOnStart = true;
+    @field("Respawn By Wave")               bool   respawnByWave = false;
+    @field("Wave Interval (s)")             float  waveInterval = 15.0;
+    @field("Max Alive")                     int    maxAlive = 0;
+    @field("Max Waves (0 = unlimited)")     int    maxWaves = 0;
+
+    array<gameobject> spawned;
+    float waveTimer = 0.0;
+    int wavesSpawned = 0;
+
+    on Start() {
+        waveTimer = 0.0;
+        wavesSpawned = 0;
+        spawned.clear();
+        if (spawnOnStart) { SpawnWave(); }
+    }
+
+    on Update(dt) {
+        if (!respawnByWave) { return; }
+        waveTimer += dt;
+        if (waveTimer < Mathf.max(waveInterval, 0.01)) { return; }
+        waveTimer = 0.0;
+        SpawnWave();
+    }
+
+    // Spawns one wave of targets.
+    @method fn SpawnWave() {
+        if (targetPrefab.empty() || count <= 0) { return; }
+        if (maxWaves > 0 && wavesSpawned >= maxWaves) { return; }
+
+        spawned.prune();
+        let toSpawn = count;
+        if (maxAlive > 0) {
+            toSpawn = int(Mathf.min(toSpawn, maxAlive - spawned.count));
+        }
+        if (toSpawn <= 0) { return; }
+        wavesSpawned += 1;
+
+        let center = owner.transform.position;
+        let lowScale = Mathf.min(minScale, maxScale);
+        let highScale = Mathf.max(minScale, maxScale);
+
+        for (let i = 0; i < toSpawn; i += 1) {
+            let offset = Random.insideUnitSphere() * radius;
+            if (surfaceOnly) { offset = Random.onUnitSphere() * radius; }
+
+            let instance = Scene.instantiate(targetPrefab, Scene.none);
+            if (!instance.valid()) { return; }
+            spawned.add(instance);
+
+            let t = instance.transform;
+            t.position = center + offset;
+            if (randomRotation) { t.rotation = Random.rotation(); }
+            if (highScale != 1.0 || lowScale != 1.0) {
+                t.localScale = t.localScale * Random.range(lowScale, highScale);
+            }
+        }
+    }
+    
+    // Manually despawn all active targets.
+    @method fn DespawnAll() {
+        for (let i = 0; i < spawned.count; i += 1) {
+            let target = spawned[i];
+            if (target.valid()) { target.destroy(); }
+        }
+        spawned.clear();
+    }
+    
+    // Get the count of currently active targets.
+    @method fn GetActiveCount(): int {
+        spawned.prune();
+        return spawned.count;
+    }
+}

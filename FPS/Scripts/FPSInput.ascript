@@ -1,0 +1,38 @@
+component FPSInput : Start, Update {
+    @field("Weapon") transform weapon;
+
+    on Start() {
+        if (!owner.hasScript("FPSMovement")) {
+            Debug.log("FPSInput requires FPSMovement on the player.");
+        }
+        if (!weapon.valid() || !weapon.gameObject.hasScript("FPSWeapon")) {
+            Debug.log("FPSInput: assign a weapon object with FPSWeapon to fire.");
+        }
+    }
+
+    on Update(dt) {
+        let forward = 0.0;
+        let right = 0.0;
+        let lookHorizontal = 0.0;
+        let lookVertical = 0.0;
+        if (Input.getAction("INPUT_KEY_THRUST_FORWARD")) { forward += 1.0; }
+        if (Input.getAction("INPUT_KEY_THRUST_BACKWARD")) { forward -= 1.0; }
+        if (Input.getAction("INPUT_KEY_YAW_RIGHT")) { right -= 1.0; }
+        if (Input.getAction("INPUT_KEY_YAW_LEFT")) { right += 1.0; }
+        if (Input.getAction("FPS_LOOK_LEFT")) { lookHorizontal -= 1.0; }
+        if (Input.getAction("FPS_LOOK_RIGHT")) { lookHorizontal += 1.0; }
+        if (Input.getAction("FPS_LOOK_UP")) { lookVertical -= 1.0; }
+        if (Input.getAction("FPS_LOOK_DOWN")) { lookVertical += 1.0; }
+
+        let movement = owner.getScript("FPSMovement");
+        if (movement.valid()) {
+            movement.call("SetInput", forward, right, lookHorizontal, lookVertical,
+                          Input.getAction("INPUT_KEY_PITCH_DOWN"));
+        }
+
+        if (Input.getAction("INPUT_KEY_PRIMARY") && weapon.valid()) {
+            let gun = weapon.gameObject.getScript("FPSWeapon");
+            if (gun.valid()) { gun.call("Shoot", owner); }
+        }
+    }
+}

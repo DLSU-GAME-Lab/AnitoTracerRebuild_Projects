@@ -19,33 +19,41 @@ public:
           tag(*static_cast<std::string*>(ctx.fields[5])),
           spinCount(*static_cast<int*>(ctx.fields[6])) {}
 
-#line 14 "C:/repos/AnitoTracer/SampleProjects/Scripting/Scripts/SpinAndBob.ascript"
+#line 14 "C:/repos/AnitoTracerRebuild_Projects/Scripting/Scripts/SpinAndBob.ascript"
     void OnUpdate(float dt) override {
-#line 15 "C:/repos/AnitoTracer/SampleProjects/Scripting/Scripts/SpinAndBob.ascript"
+        (void)dt;
+#line 15 "C:/repos/AnitoTracerRebuild_Projects/Scripting/Scripts/SpinAndBob.ascript"
         if ((!enabled)) {
             {
-#line 15 "C:/repos/AnitoTracer/SampleProjects/Scripting/Scripts/SpinAndBob.ascript"
+#line 15 "C:/repos/AnitoTracerRebuild_Projects/Scripting/Scripts/SpinAndBob.ascript"
                 return;
             }
         }
-#line 16 "C:/repos/AnitoTracer/SampleProjects/Scripting/Scripts/SpinAndBob.ascript"
+#line 16 "C:/repos/AnitoTracerRebuild_Projects/Scripting/Scripts/SpinAndBob.ascript"
         time = (time + dt);
-#line 17 "C:/repos/AnitoTracer/SampleProjects/Scripting/Scripts/SpinAndBob.ascript"
-        Rotate(spinAxis, (spinSpeed * dt));
-#line 18 "C:/repos/AnitoTracer/SampleProjects/Scripting/Scripts/SpinAndBob.ascript"
-        { anito::Vec3 _pos = GetPosition(); _pos.y = (baseY + (std::cos(static_cast<float>((time * bobFrequency))) * bobHeight)); SetPosition(_pos); }
+#line 17 "C:/repos/AnitoTracerRebuild_Projects/Scripting/Scripts/SpinAndBob.ascript"
+        gameObject.transform().rotate(spinAxis, (spinSpeed * dt));
+#line 18 "C:/repos/AnitoTracerRebuild_Projects/Scripting/Scripts/SpinAndBob.ascript"
+        { anito::Vec3 _t0 = gameObject.transform().position(); _t0.y = (baseY + (std::sin(static_cast<float>((time * bobFrequency))) * bobHeight)); gameObject.transform().setPosition(_t0); }
     }
 
-#line 21 "C:/repos/AnitoTracer/SampleProjects/Scripting/Scripts/SpinAndBob.ascript"
+#line 21 "C:/repos/AnitoTracerRebuild_Projects/Scripting/Scripts/SpinAndBob.ascript"
     void resetTime() {
-#line 22 "C:/repos/AnitoTracer/SampleProjects/Scripting/Scripts/SpinAndBob.ascript"
+#line 22 "C:/repos/AnitoTracerRebuild_Projects/Scripting/Scripts/SpinAndBob.ascript"
         time = 0.0f;
-#line 23 "C:/repos/AnitoTracer/SampleProjects/Scripting/Scripts/SpinAndBob.ascript"
+#line 23 "C:/repos/AnitoTracerRebuild_Projects/Scripting/Scripts/SpinAndBob.ascript"
         spinCount = (spinCount + 1);
     }
 
     bool Invoke(const char* method) override {
+        (void)method;
         if (std::strcmp(method, "resetTime") == 0) { resetTime(); return true; }
+        return false;
+    }
+
+    bool Call(const char* method, const anito::Variant* args, uint32_t argc, anito::Variant* ret) override {
+        (void)method; (void)args; (void)argc; (void)ret;
+        if (std::strcmp(method, "resetTime") == 0 && argc == 0) { resetTime(); return true; }
         return false;
     }
 

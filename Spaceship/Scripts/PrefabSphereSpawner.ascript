@@ -1,0 +1,68 @@
+// Spawns copies of a prefab at random positions inside (or on) a sphere centered on this object.
+component PrefabSphereSpawner : Start, Update {
+    @field("Prefab")                        prefab prefabAsset;
+    @field("Count")                         int    count = 20;
+    @field("Radius")                        float  radius = 20.0;
+    @field("Surface Only")                  bool   surfaceOnly = false;
+    @field("Random Rotation")               bool   randomRotation = true;
+    @field("Min Scale")                     float  minScale = 1.0;
+    @field("Max Scale")                     float  maxScale = 1.0;
+    @field("Spawn On Start")                bool   spawnOnStart = true;
+    @field("Spawn By Interval")             bool   spawnByInterval = false;
+    @field("Wave Interval (s)")             float  waveInterval = 10.0;
+    @field("Max Alive (0 = unlimited)")     int    maxAlive = 0;
+    @field("Max Waves (0 = unlimited)")     int    maxWaves = 0;
+
+    array<gameobject> spawned;
+    float waveTimer = 0.0;
+    int wavesSpawned = 0;
+
+    on Start() {
+        waveTimer = 0.0;
+        wavesSpawned = 0;
+        spawned.clear();
+        if (spawnOnStart) { Spawn(); }
+    }
+
+    on Update(dt) {
+        if (!spawnByInterval) { return; }
+        waveTimer += dt;
+        if (waveTimer < Mathf.max(waveInterval, 0.01)) { return; }
+        waveTimer = 0.0;
+        Spawn();
+    }
+
+    // Spawns the configured batch (one wave).
+    @method fn Spawn() {
+        if (prefabAsset.empty() || count <= 0) { return; }
+        if (maxWaves > 0 && wavesSpawned >= maxWaves) { return; }
+
+        spawned.prune();
+        let toSpawn = count;
+        if (maxAlive > 0) {
+            toSpawn = int(Mathf.min(toSpawn, maxAlive - spawned.count));
+        }
+        if (toSpawn <= 0) { return; }
+        wavesSpawned += 1;
+
+        let center = owner.transform.position;
+        let lowScale = Mathf.min(minScale, maxScale);
+        let highScale = Mathf.max(minScale, maxScale);
+
+        for (let i = 0; i < toSpawn; i += 1) {
+            let offset = Random.insideUnitSphere() * radius;
+            if (surfaceOnly) { offset = Random.onUnitSphere() * radius; }
+
+            let instance = Scene.instantiate(prefabAsset, Scene.none);
+            if (!instance.valid()) { return; }
+            spawned.add(instance);
+
+            let t = instance.transform;
+            t.position = center + offset;
+            if (randomRotation) { t.rotation = Random.rotation(); }
+            if (highScale != 1.0 || lowScale != 1.0) {
+                t.localScale = t.localScale * Random.range(lowScale, highScale);
+            }
+        }
+    }
+}

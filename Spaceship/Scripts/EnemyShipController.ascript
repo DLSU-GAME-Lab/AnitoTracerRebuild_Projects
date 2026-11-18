@@ -1,0 +1,55 @@
+// Simple AI: steers toward the player through PlayerMovementComponent and fires the ShipWeapon on the same object.
+component EnemyShipController : Update {
+    @field("Turn Gain")        float turnGain = 2.0;
+    @field("Keep Distance")    float keepDistance = 25.0;
+    @field("Fire Range")       float fireRange = 80.0;
+    @field("Fire Cone (deg)")  float fireConeDegrees = 8.0;
+
+    gameobject player;
+
+    // Called by Health when this ship is destroyed.
+    @method fn OnDestroy() {
+        owner.destroy();
+    }
+
+    on Update(dt) {
+        let movement = owner.getScript("PlayerMovementComponent");
+        if (!movement.valid()) { return; }
+
+        if (!player.valid()) {
+            player = Scene.findWithScript("PlayerController");
+        }
+
+        let playerAlive = player.valid();
+        if (playerAlive) {
+            let playerHealth = player.getScript("Health");
+            if (playerHealth.valid() && playerHealth.callBool("IsDepleted")) { playerAlive = false; }
+        }
+        if (!playerAlive) {
+            movement.call("SetInput", 0.0, 0.0, 0.0, 0.0);
+            return;
+        }
+
+        let me = owner.transform;
+        let toTarget = player.transform.position - me.position;
+        let distance = toTarget.length;
+        if (distance < 0.0001) { return; }
+
+        // Direction to the player in the ship's local space (+Z forward, +X right, +Y up).
+        let local = me.rotation.inverse * (toTarget / distance);
+        let yawError = Mathf.atan2(local.x, local.z);
+        let pitchError = Mathf.atan2(local.y, Mathf.sqrt(local.x * local.x + local.z * local.z));
+        let aimError = Mathf.acos(Mathf.clamp(local.z, -1.0, 1.0));
+
+        let yaw = Mathf.clamp(yawError * turnGain, -1.0, 1.0);
+        let pitch = Mathf.clamp(pitchError * turnGain, -1.0, 1.0);
+        let thrust = 0.0;
+        if (distance > keepDistance && local.z > 0.0) { thrust = 1.0; }
+        movement.call("SetInput", thrust, pitch, 0.0, yaw);
+
+        if (distance <= fireRange && aimError <= Mathf.deg2rad * fireConeDegrees) {
+            let weapon = owner.getScript("ShipWeapon");
+            if (weapon.valid()) { weapon.call("Shoot"); }
+        }
+    }
+}

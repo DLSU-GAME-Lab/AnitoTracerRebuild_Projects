@@ -1,0 +1,1 @@
+{"entryscene":"Main.ascene","settings":{"lighting":{"shadow_bias":0.015,"ambient_multiplier":1,"ambient_color":[0.03,0.03,0.03]},"debug":{"show_physics_collider_wireframes":false},"physics":{"gravity_enabled":true,"gravity":[0,-9.81,0]}}}

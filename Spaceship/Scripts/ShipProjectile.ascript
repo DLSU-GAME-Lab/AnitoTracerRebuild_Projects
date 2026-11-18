@@ -1,0 +1,65 @@
+// Driven by a rigidbody + sphere collider (added by ShipWeapon); damages the first
+// Health-bearing object it collides with. The instigator's hierarchy is never damaged.
+component ShipProjectile : Update, FixedUpdate, CollisionEnter {
+    @field("Speed")        float speed = 60.0;
+    @field("Damage")       float damage = 10.0;
+    @field("Lifetime (s)") float lifetime = 5.0;
+
+    vec3 direction = vec3(0.0, 0.0, 1.0);
+    float age = 0.0;
+    bool spent = false;
+    gameobject instigator;
+
+    fn Launch(dir: vec3, spd: float, dmg: float, life: float, who: gameobject) {
+        if (dir.lengthSq > 0.0) {
+            direction = dir.normalized;
+        } else {
+            direction = vec3(0.0, 0.0, 1.0);
+        }
+        speed = spd;
+        damage = dmg;
+        lifetime = life;
+        instigator = who;
+    }
+
+    on FixedUpdate(dt) {
+        let rb = owner.rigidbody;
+        if (rb.valid()) {
+            // Re-asserted every tick so collisions and gravity can't deflect or slow the projectile.
+            rb.velocity = direction * speed;
+        }
+    }
+
+    on CollisionEnter(other) {
+        if (spent) { return; }
+        if (!other.valid()) { return; }
+        if (other == owner) { return; }
+        if (other.root == instigator.root) { return; }
+        if (other.hasScript("ShipProjectile")) { return; }
+
+        // The collided body may be a child of the object that carries the Health.
+        let current = other;
+        while (current.valid()) {
+            if (current.hasScript("Health")) {
+                let health = current.getScript("Health");
+                if (!health.callBool("IsDepleted")) {
+                    health.call("TakeDamage", damage);
+                }
+                break;
+            }
+            current = current.parent;
+        }
+
+        spent = true;
+        owner.destroy();
+    }
+
+    on Update(dt) {
+        if (spent) { return; }
+        age += dt;
+        if (age >= lifetime) {
+            spent = true;
+            owner.destroy();
+        }
+    }
+}

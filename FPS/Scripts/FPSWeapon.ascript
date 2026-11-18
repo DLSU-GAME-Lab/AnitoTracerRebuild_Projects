@@ -1,0 +1,43 @@
+component FPSWeapon {
+    @field("Damage") float damage = 10.0;
+    @field("Projectile Speed") float projectileSpeed = 60.0;
+    @field("Projectile Lifetime (s)") float projectileLifetime = 5.0;
+    @field("Projectile Scale") float projectileScale = 0.1;
+    @field("Fire Interval (s)") float fireInterval = 0.2;
+    @field("Muzzle Offset") vec3 muzzleOffset = vec3(0.0, 0.0, 0.5);
+
+    float nextShotTime = 0.0;
+
+    @method fn Shoot(shooter: gameobject) {
+        if (Time.time < nextShotTime) { return; }
+        if (projectileSpeed <= 0.0 || projectileLifetime <= 0.0 || projectileScale <= 0.0) {
+            Debug.log("FPSWeapon requires positive projectile speed, lifetime, and scale.");
+            return;
+        }
+
+        let gunTransform = owner.transform;
+        let rotation = gunTransform.rotation;
+        let forward = rotation * vec3(0.0, 0.0, 1.0);
+        let projectile = Scene.createPrimitive("sphere", Scene.none);
+        if (!projectile.valid()) {
+            Debug.log("FPSWeapon could not create a projectile.");
+            return;
+        }
+        projectile.name = "FPS Projectile";
+        projectile.transform.position = gunTransform.position + rotation * muzzleOffset;
+        projectile.transform.localScale = vec3(projectileScale, projectileScale, projectileScale);
+        let projectileScript = projectile.addScript("FPSProjectile");
+        if (!projectileScript.valid()) {
+            Debug.log("FPSWeapon could not attach FPSProjectile.");
+            projectile.destroy();
+            return;
+        }
+        projectileScript.call("Launch", forward, projectileSpeed, damage, projectileLifetime, shooter);
+        projectile.addRigidbody(1.0);
+        projectile.addSphereCollider(1.0);
+        nextShotTime = Time.time + Mathf.max(0.0, fireInterval);
+
+        let audio = owner.audioSource;
+        if (audio.valid()) { audio.play(); }
+    }
+}
