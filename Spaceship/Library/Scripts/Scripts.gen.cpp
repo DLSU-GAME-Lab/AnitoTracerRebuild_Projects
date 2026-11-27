@@ -21,116 +21,116 @@ public:
           maxLagDistance(*static_cast<float*>(ctx.fields[7])),
           snapOnStart(*static_cast<bool*>(ctx.fields[8])) {}
 
-#line 21 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 21 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
     float Blend(float smoothness, float dt) {
         (void)smoothness;
         (void)dt;
-#line 22 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 22 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         if ((smoothness <= 0.0f)) {
             {
-#line 22 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 22 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                 return 1.0f;
             }
         }
-#line 23 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 23 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         return (1.0f - anito::Mathf::exp(((-smoothness) * dt)));
     }
 
-#line 26 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 26 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
     void OnUpdate(float dt) override {
         (void)dt;
-#line 27 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 27 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         if ((!anito::ResolveTransformField(_f_target).valid())) {
             {
-#line 27 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 27 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                 return;
             }
         }
-#line 29 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 29 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         anito::Transform cameraTransform = gameObject.transform();
-#line 30 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 30 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         anito::Vec3 targetPos = anito::ResolveTransformField(_f_target).position();
-#line 31 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 31 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         anito::Quat targetRot = anito::ResolveTransformField(_f_target).rotation();
-#line 32 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 32 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         anito::Vec3 desiredPos = (targetPos + (targetRot * targetOffset));
-#line 33 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 33 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         anito::Quat desiredRot = cameraTransform.rotation();
-#line 35 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 35 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         if (matchTargetRotation) {
             {
-#line 36 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 36 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                 desiredRot = targetRot;
             }
         } else {
             {
-#line 38 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 38 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                 anito::Vec3 lookPoint = (targetPos + (targetRot * lookAtOffset));
-#line 39 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 39 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                 anito::Vec3 toLook = (lookPoint - desiredPos);
-#line 40 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 40 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                 if ((toLook.lengthSq() >= 0.00000001f)) {
                     {
-#line 41 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 41 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                         anito::Vec3 forward = toLook.normalized();
-#line 43 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 43 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                         anito::Vec3 targetUp = (targetRot * anito::Vec3{static_cast<float>(0.0f), static_cast<float>(1.0f), static_cast<float>(0.0f)});
-#line 44 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 44 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                         anito::Vec3 up = anito::Vector3::lerp(anito::Vector3::up(), targetUp, anito::Mathf::clamp01(rollInfluence));
-#line 45 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 45 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                         if ((anito::Mathf::abs(up.normalized().dot(forward)) > 0.999f)) {
                             {
-#line 45 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 45 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                                 up = targetUp;
                             }
                         }
-#line 46 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 46 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                         desiredRot = anito::Quaternion::lookRotation(forward, up.normalized());
                     }
                 }
             }
         }
-#line 50 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 50 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         if ((!initialized)) {
             {
-#line 51 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 51 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                 initialized = true;
-#line 52 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 52 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                 if (snapOnStart) {
                     {
-#line 53 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 53 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                         cameraTransform.setPosition(desiredPos);
-#line 54 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 54 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                         cameraTransform.setRotation(desiredRot);
-#line 55 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 55 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                         return;
                     }
                 }
             }
         }
-#line 59 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 59 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         anito::Vec3 newPos = anito::Vector3::lerp(cameraTransform.position(), desiredPos, Blend(positionSmoothness, dt));
-#line 60 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 60 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         if ((maxLagDistance > 0.0f)) {
             {
-#line 61 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 61 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                 anito::Vec3 lag = (newPos - desiredPos);
-#line 62 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 62 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                 float lagLength = lag.length();
-#line 63 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 63 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                 if ((lagLength > maxLagDistance)) {
                     {
-#line 64 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 64 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
                         newPos = (desiredPos + (lag * ((maxLagDistance / lagLength))));
                     }
                 }
             }
         }
-#line 67 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 67 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         anito::Quat newRot = anito::Quaternion::slerp(cameraTransform.rotation(), desiredRot, Blend(rotationSmoothness, dt)).normalized();
-#line 68 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 68 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         cameraTransform.setPosition(newPos);
-#line 69 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
+#line 69 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/CinematicCameraFollower.ascript"
         cameraTransform.setRotation(newRot);
     }
 
@@ -167,101 +167,101 @@ public:
           fireRange(*static_cast<float*>(ctx.fields[2])),
           fireConeDegrees(*static_cast<float*>(ctx.fields[3])) {}
 
-#line 11 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 11 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
     void OnDestroy() {
-#line 12 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 12 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         gameObject.destroy();
     }
 
-#line 15 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 15 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
     void OnUpdate(float dt) override {
         (void)dt;
-#line 16 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 16 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         anito::Script movement = gameObject.getScript(std::string("PlayerMovementComponent"));
-#line 17 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 17 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         if ((!movement.valid())) {
             {
-#line 17 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 17 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
                 return;
             }
         }
-#line 19 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 19 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         if ((!player.valid())) {
             {
-#line 20 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 20 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
                 player = anito::Scene::findWithScript(std::string("PlayerController"));
             }
         }
-#line 23 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 23 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         bool playerAlive = player.valid();
-#line 24 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 24 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         if (playerAlive) {
             {
-#line 25 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 25 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
                 anito::Script playerHealth = player.getScript(std::string("Health"));
-#line 26 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 26 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
                 if ((playerHealth.valid() && playerHealth.callBool(std::string("IsDepleted")))) {
                     {
-#line 26 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 26 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
                         playerAlive = false;
                     }
                 }
             }
         }
-#line 28 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 28 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         if ((!playerAlive)) {
             {
-#line 29 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 29 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
                 movement.call(std::string("SetInput"), 0.0f, 0.0f, 0.0f, 0.0f);
-#line 30 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 30 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
                 return;
             }
         }
-#line 33 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 33 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         anito::Transform me = gameObject.transform();
-#line 34 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 34 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         anito::Vec3 toTarget = (player.transform().position() - me.position());
-#line 35 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 35 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         float distance = toTarget.length();
-#line 36 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 36 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         if ((distance < 0.0001f)) {
             {
-#line 36 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 36 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
                 return;
             }
         }
-#line 39 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 39 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         anito::Vec3 local = (me.rotation().inverse() * ((toTarget / distance)));
-#line 40 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 40 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         float yawError = anito::Mathf::atan2(local.x, local.z);
-#line 41 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 41 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         float pitchError = anito::Mathf::atan2(local.y, anito::Mathf::sqrt(((local.x * local.x) + (local.z * local.z))));
-#line 42 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 42 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         float aimError = anito::Mathf::acos(anito::Mathf::clamp(local.z, (-1.0f), 1.0f));
-#line 44 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 44 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         float yaw = anito::Mathf::clamp((yawError * turnGain), (-1.0f), 1.0f);
-#line 45 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 45 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         float pitch = anito::Mathf::clamp((pitchError * turnGain), (-1.0f), 1.0f);
-#line 46 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 46 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         float thrust = 0.0f;
-#line 47 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 47 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         if (((distance > keepDistance) && (local.z > 0.0f))) {
             {
-#line 47 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 47 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
                 thrust = 1.0f;
             }
         }
-#line 48 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 48 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         movement.call(std::string("SetInput"), thrust, pitch, 0.0f, yaw);
-#line 50 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 50 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
         if (((distance <= fireRange) && (aimError <= (anito::Mathf::deg2rad() * fireConeDegrees)))) {
             {
-#line 51 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 51 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
                 anito::Script weapon = gameObject.getScript(std::string("ShipWeapon"));
-#line 52 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 52 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
                 if (weapon.valid()) {
                     {
-#line 52 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
+#line 52 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/EnemyShipController.ascript"
                         weapon.call(std::string("Shoot"));
                     }
                 }
@@ -295,57 +295,57 @@ public:
         : anito::ScriptBehaviour(ctx),
           tumbleSpeed(*static_cast<anito::Vec3*>(ctx.fields[0])) {}
 
-#line 8 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 8 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
     void OnDestroy() {
-#line 9 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 9 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
         anito::AudioSource audio = gameObject.audioSource();
-#line 10 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 10 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
         if (audio.valid()) {
             {
-#line 10 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 10 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
                 audio.playDetached();
             }
         }
-#line 11 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 11 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
         gameObject.destroy();
     }
 
-#line 14 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 14 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
     void OnFixedUpdate(float dt) override {
         (void)dt;
-#line 15 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 15 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
         anito::Rigidbody rb = gameObject.rigidbody();
-#line 16 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 16 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
         if ((!rb.valid())) {
             {
-#line 16 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 16 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
                 return;
             }
         }
-#line 17 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 17 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
         if ((!rb.simulated())) {
             {
-#line 17 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 17 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
                 return;
             }
         }
-#line 18 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 18 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
         if ((rb.mass() <= 0.0f)) {
             {
-#line 18 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 18 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
                 return;
             }
         }
-#line 20 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 20 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
         if ((!tumbleApplied)) {
             {
-#line 21 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 21 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
                 rb.setAngularVelocity(tumbleSpeed);
-#line 22 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 22 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
                 tumbleApplied = true;
             }
         }
-#line 24 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
+#line 24 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/FloatingAsteroid.ascript"
         rb.addForce(((-rb.worldGravity()) * rb.mass()));
     }
 
@@ -376,113 +376,113 @@ public:
           barWidth(*static_cast<float*>(ctx.fields[3])),
           onDepletedMessage(*static_cast<std::string*>(ctx.fields[4])) {}
 
-#line 13 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 13 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
     float GetCurrentHealth() {
-#line 14 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 14 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         if ((currentHealth < 0.0f)) {
             {
-#line 14 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 14 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
                 currentHealth = maxHealth;
             }
         }
-#line 15 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 15 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         return currentHealth;
     }
 
-#line 18 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 18 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
     float GetMaxHealth() {
-#line 18 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 18 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         return maxHealth;
     }
 
-#line 20 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 20 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
     bool IsDepleted() {
-#line 20 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 20 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         return depleted;
     }
 
-#line 23 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 23 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
     bool TakeDamage(float amount) {
         (void)amount;
-#line 24 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 24 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         if ((depleted || (amount <= 0.0f))) {
             {
-#line 24 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 24 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
                 return false;
             }
         }
-#line 25 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 25 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         currentHealth = anito::Mathf::max(0.0f, (GetCurrentHealth() - amount));
-#line 26 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 26 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         if ((currentHealth > 0.0f)) {
             {
-#line 26 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 26 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
                 return false;
             }
         }
-#line 27 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 27 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         depleted = true;
-#line 28 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 28 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         gameObject.sendMessage(onDepletedMessage);
-#line 29 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 29 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         return true;
     }
 
-#line 32 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 32 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
     void Heal(float amount) {
         (void)amount;
-#line 33 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 33 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         if ((depleted || (amount <= 0.0f))) {
             {
-#line 33 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 33 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
                 return;
             }
         }
-#line 34 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 34 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         currentHealth = anito::Mathf::min(maxHealth, (GetCurrentHealth() + amount));
     }
 
-#line 37 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 37 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
     void OnGUI(float dt) override {
         (void)dt;
-#line 38 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 38 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         if (((!showHealthBar) || depleted)) {
             {
-#line 38 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 38 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
                 return;
             }
         }
-#line 39 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 39 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         anito::Camera activeCamera = anito::Scene::mainCamera().camera();
-#line 40 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 40 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         if ((!activeCamera.valid())) {
             {
-#line 40 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 40 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
                 return;
             }
         }
-#line 42 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 42 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         anito::Vec3 screen = anito::Gui::worldToScreen((gameObject.transform().position() + anito::Vec3{static_cast<float>(0.0f), static_cast<float>(barHeightOffset), static_cast<float>(0.0f)}));
-#line 43 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 43 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         if ((screen.z < 0.0f)) {
             {
-#line 43 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 43 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
                 return;
             }
         }
-#line 45 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 45 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         float barHeight = 4.0f;
-#line 46 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 46 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         float fraction = anito::Mathf::clamp01((GetCurrentHealth() / anito::Mathf::max(maxHealth, 0.0001f)));
-#line 47 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 47 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         anito::Vec3 topLeft = anito::Vec3{static_cast<float>((screen.x - (barWidth * 0.5f))), static_cast<float>((screen.y - (barHeight * 0.5f))), static_cast<float>(0.0f)};
-#line 48 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 48 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         anito::Vec3 bottomRight = anito::Vec3{static_cast<float>((screen.x + (barWidth * 0.5f))), static_cast<float>((screen.y + (barHeight * 0.5f))), static_cast<float>(0.0f)};
-#line 50 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 50 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         anito::Gui::fillRect(topLeft, bottomRight, anito::Vec3{static_cast<float>(0.08f), static_cast<float>(0.08f), static_cast<float>(0.08f)}, 0.8f);
-#line 51 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 51 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         anito::Gui::fillRect(topLeft, anito::Vec3{static_cast<float>((topLeft.x + (barWidth * fraction))), static_cast<float>(bottomRight.y), static_cast<float>(0.0f)}, anito::Vec3{static_cast<float>((1.0f - fraction)), static_cast<float>((0.86f * fraction)), static_cast<float>(0.16f)}, 1.0f);
-#line 52 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
+#line 52 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/Health.ascript"
         anito::Gui::drawRect(topLeft, bottomRight, anito::Vec3{static_cast<float>(0.0f), static_cast<float>(0.0f), static_cast<float>(0.0f)}, 1.0f, 1.0f);
     }
 
@@ -516,91 +516,91 @@ public:
     explicit PlayerController(const anito::ScriptContext& ctx)
         : anito::ScriptBehaviour(ctx) {}
 
-#line 3 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 3 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
     void OnUpdate(float dt) override {
         (void)dt;
-#line 4 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 4 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
         anito::Script movement = gameObject.getScript(std::string("PlayerMovementComponent"));
-#line 5 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 5 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
         if (movement.valid()) {
             {
-#line 6 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 6 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 float thrust = 0.0f;
-#line 7 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 7 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 float roll = 0.0f;
-#line 8 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 8 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 float pitch = 0.0f;
-#line 9 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 9 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 float yaw = 0.0f;
-#line 10 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 10 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 if (anito::Input::getAction(std::string("INPUT_KEY_THRUST_FORWARD"))) {
                     {
-#line 10 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 10 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                         thrust += 1.0f;
                     }
                 }
-#line 11 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 11 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 if (anito::Input::getAction(std::string("INPUT_KEY_THRUST_BACKWARD"))) {
                     {
-#line 11 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 11 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                         thrust -= 1.0f;
                     }
                 }
-#line 12 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 12 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 if (anito::Input::getAction(std::string("INPUT_KEY_ROLL_RIGHT"))) {
                     {
-#line 12 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 12 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                         roll += 1.0f;
                     }
                 }
-#line 13 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 13 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 if (anito::Input::getAction(std::string("INPUT_KEY_ROLL_LEFT"))) {
                     {
-#line 13 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 13 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                         roll -= 1.0f;
                     }
                 }
-#line 14 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 14 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 if (anito::Input::getAction(std::string("INPUT_KEY_PITCH_UP"))) {
                     {
-#line 14 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 14 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                         pitch += 1.0f;
                     }
                 }
-#line 15 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 15 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 if (anito::Input::getAction(std::string("INPUT_KEY_PITCH_DOWN"))) {
                     {
-#line 15 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 15 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                         pitch -= 1.0f;
                     }
                 }
-#line 16 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 16 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 if (anito::Input::getAction(std::string("INPUT_KEY_YAW_RIGHT"))) {
                     {
-#line 16 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 16 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                         yaw += 1.0f;
                     }
                 }
-#line 17 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 17 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 if (anito::Input::getAction(std::string("INPUT_KEY_YAW_LEFT"))) {
                     {
-#line 17 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 17 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                         yaw -= 1.0f;
                     }
                 }
-#line 18 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 18 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 movement.call(std::string("SetInput"), thrust, pitch, roll, yaw);
             }
         }
-#line 21 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 21 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
         if (anito::Input::getAction(std::string("INPUT_KEY_PRIMARY"))) {
             {
-#line 22 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 22 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 anito::Script weapon = gameObject.getScript(std::string("ShipWeapon"));
-#line 23 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 23 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                 if (weapon.valid()) {
                     {
-#line 23 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
+#line 23 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerController.ascript"
                         weapon.call(std::string("Shoot"));
                     }
                 }
@@ -634,109 +634,109 @@ public:
           acceleration(*static_cast<float*>(ctx.fields[6])),
           deceleration(*static_cast<float*>(ctx.fields[7])) {}
 
-#line 17 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 17 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
     void SetInput(float thrust, float pitch, float roll, float yaw) {
         (void)thrust;
         (void)pitch;
         (void)roll;
         (void)yaw;
-#line 18 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 18 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         inThrust = thrust;
-#line 19 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 19 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         inPitch = pitch;
-#line 20 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 20 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         inRoll = roll;
-#line 21 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 21 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         inYaw = yaw;
     }
 
-#line 24 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 24 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
     void OnFixedUpdate(float dt) override {
         (void)dt;
-#line 25 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 25 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         anito::Rigidbody rb = gameObject.rigidbody();
-#line 26 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 26 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         if ((!rb.valid())) {
             {
-#line 26 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 26 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
                 return;
             }
         }
-#line 27 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 27 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         if ((!rb.simulated())) {
             {
-#line 27 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 27 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
                 return;
             }
         }
-#line 28 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 28 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         if ((rb.mass() <= 0.0f)) {
             {
-#line 28 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 28 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
                 return;
             }
         }
-#line 30 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 30 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         float thrust = anito::Mathf::clamp(inThrust, (-1.0f), 1.0f);
-#line 31 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 31 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         float pitch = anito::Mathf::clamp(inPitch, (-1.0f), 1.0f);
-#line 32 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 32 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         float roll = anito::Mathf::clamp(inRoll, (-1.0f), 1.0f);
-#line 33 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 33 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         float yaw = anito::Mathf::clamp(inYaw, (-1.0f), 1.0f);
-#line 35 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 35 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         anito::Quat rotation = rb.rotation();
-#line 36 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 36 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         anito::Vec3 forward = (rotation * anito::Vec3{static_cast<float>(0.0f), static_cast<float>(0.0f), static_cast<float>(1.0f)});
-#line 37 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 37 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         float thrustSpeed = reverseSpeed;
-#line 38 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 38 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         if ((thrust > 0.0f)) {
             {
-#line 38 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 38 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
                 thrustSpeed = forwardSpeed;
             }
         }
-#line 39 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 39 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         anito::Vec3 targetVelocity = (forward * ((thrust * thrustSpeed)));
-#line 42 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 42 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         anito::Vec3 velocity = rb.velocity();
-#line 43 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 43 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         anito::Vec3 delta = (targetVelocity - velocity);
-#line 44 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 44 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         float deltaLength = delta.length();
-#line 45 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 45 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         float rate = deceleration;
-#line 46 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 46 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         if ((anito::Mathf::abs(thrust) > 0.0001f)) {
             {
-#line 46 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 46 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
                 rate = acceleration;
             }
         }
-#line 47 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 47 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         float maxStep = (rate * dt);
-#line 48 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 48 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         if (((deltaLength <= maxStep) || (deltaLength < 0.0001f))) {
             {
-#line 49 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 49 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
                 rb.setVelocity(targetVelocity);
             }
         } else {
             {
-#line 51 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 51 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
                 rb.setVelocity((velocity + (delta * ((maxStep / deltaLength)))));
             }
         }
-#line 54 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 54 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         anito::Vec3 localTorque = anito::Vec3{static_cast<float>(((-pitch) * pitchTorque)), static_cast<float>((yaw * yawTorque)), static_cast<float>((roll * rollTorque))};
-#line 55 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 55 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         anito::Vec3 controlTorque = (rotation * localTorque);
-#line 56 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 56 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         anito::Vec3 dampingTorque = ((-rb.angularVelocity()) * angularDamping);
-#line 57 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 57 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         rb.addTorque((controlTorque + dampingTorque));
-#line 60 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
+#line 60 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PlayerMovementComponent.ascript"
         rb.addForce(((-rb.worldGravity()) * rb.mass()));
     }
 
@@ -783,128 +783,128 @@ public:
           maxAlive(*static_cast<int*>(ctx.fields[10])),
           maxWaves(*static_cast<int*>(ctx.fields[11])) {}
 
-#line 20 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 20 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
     void OnStart() override {
-#line 21 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 21 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         waveTimer = 0.0f;
-#line 22 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 22 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         wavesSpawned = 0;
-#line 23 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 23 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         spawned.clear();
-#line 24 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 24 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         if (spawnOnStart) {
             {
-#line 24 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 24 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 Spawn();
             }
         }
     }
 
-#line 27 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 27 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
     void OnUpdate(float dt) override {
         (void)dt;
-#line 28 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 28 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         if ((!spawnByInterval)) {
             {
-#line 28 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 28 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 return;
             }
         }
-#line 29 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 29 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         waveTimer += dt;
-#line 30 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 30 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         if ((waveTimer < anito::Mathf::max(waveInterval, 0.01f))) {
             {
-#line 30 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 30 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 return;
             }
         }
-#line 31 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 31 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         waveTimer = 0.0f;
-#line 32 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 32 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         Spawn();
     }
 
-#line 36 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 36 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
     void Spawn() {
-#line 37 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 37 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         if ((anito::ResolvePrefabField(_f_prefabAsset).empty() || (count <= 0))) {
             {
-#line 37 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 37 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 return;
             }
         }
-#line 38 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 38 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         if (((maxWaves > 0) && (wavesSpawned >= maxWaves))) {
             {
-#line 38 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 38 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 return;
             }
         }
-#line 40 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 40 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         spawned.prune();
-#line 41 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 41 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         int toSpawn = count;
-#line 42 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 42 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         if ((maxAlive > 0)) {
             {
-#line 43 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 43 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 toSpawn = static_cast<int>(anito::Mathf::min(static_cast<float>(toSpawn), static_cast<float>((maxAlive - spawned.count()))));
             }
         }
-#line 45 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 45 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         if ((toSpawn <= 0)) {
             {
-#line 45 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 45 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 return;
             }
         }
-#line 46 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 46 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         wavesSpawned += 1;
-#line 48 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 48 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         anito::Vec3 center = gameObject.transform().position();
-#line 49 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 49 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         float lowScale = anito::Mathf::min(minScale, maxScale);
-#line 50 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 50 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         float highScale = anito::Mathf::max(minScale, maxScale);
-#line 52 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 52 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
         for (int i = 0; (i < toSpawn); i += 1) {
             {
-#line 53 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 53 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 anito::Vec3 offset = (anito::Random::insideUnitSphere() * radius);
-#line 54 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 54 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 if (surfaceOnly) {
                     {
-#line 54 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 54 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                         offset = (anito::Random::onUnitSphere() * radius);
                     }
                 }
-#line 56 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 56 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 anito::GameObject instance = anito::Scene::instantiate(anito::ResolvePrefabField(_f_prefabAsset), anito::Scene::none());
-#line 57 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 57 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 if ((!instance.valid())) {
                     {
-#line 57 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 57 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                         return;
                     }
                 }
-#line 58 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 58 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 spawned.add(instance);
-#line 60 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 60 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 anito::Transform t = instance.transform();
-#line 61 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 61 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 t.setPosition((center + offset));
-#line 62 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 62 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 if (randomRotation) {
                     {
-#line 62 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 62 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                         t.setRotation(anito::Random::rotation());
                     }
                 }
-#line 63 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 63 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                 if (((highScale != 1.0f) || (lowScale != 1.0f))) {
                     {
-#line 64 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
+#line 64 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/PrefabSphereSpawner.ascript"
                         t.setLocalScale((t.localScale() * anito::Random::range(lowScale, highScale)));
                     }
                 }
@@ -950,136 +950,136 @@ public:
           damage(*static_cast<float*>(ctx.fields[1])),
           lifetime(*static_cast<float*>(ctx.fields[2])) {}
 
-#line 13 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 13 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
     void Launch(anito::Vec3 dir, float spd, float dmg, float life, anito::GameObject who) {
         (void)dir;
         (void)spd;
         (void)dmg;
         (void)life;
         (void)who;
-#line 14 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 14 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         if ((dir.lengthSq() > 0.0f)) {
             {
-#line 15 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 15 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                 direction = dir.normalized();
             }
         } else {
             {
-#line 17 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 17 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                 direction = anito::Vec3{static_cast<float>(0.0f), static_cast<float>(0.0f), static_cast<float>(1.0f)};
             }
         }
-#line 19 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 19 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         speed = spd;
-#line 20 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 20 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         damage = dmg;
-#line 21 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 21 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         lifetime = life;
-#line 22 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 22 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         instigator = who;
     }
 
-#line 25 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 25 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
     void OnFixedUpdate(float dt) override {
         (void)dt;
-#line 26 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 26 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         anito::Rigidbody rb = gameObject.rigidbody();
-#line 27 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 27 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         if (rb.valid()) {
             {
-#line 29 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 29 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                 rb.setVelocity((direction * speed));
             }
         }
     }
 
-#line 33 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 33 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
     void OnCollisionEnter(anito::GameObject other) override {
         (void)other;
-#line 34 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 34 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         if (spent) {
             {
-#line 34 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 34 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                 return;
             }
         }
-#line 35 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 35 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         if ((!other.valid())) {
             {
-#line 35 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 35 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                 return;
             }
         }
-#line 36 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 36 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         if ((other == gameObject)) {
             {
-#line 36 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 36 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                 return;
             }
         }
-#line 37 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 37 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         if ((other.root() == instigator.root())) {
             {
-#line 37 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 37 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                 return;
             }
         }
-#line 38 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 38 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         if (other.hasScript(std::string("ShipProjectile"))) {
             {
-#line 38 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 38 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                 return;
             }
         }
-#line 41 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 41 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         anito::GameObject current = other;
-#line 42 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 42 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         while (current.valid()) {
             {
-#line 43 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 43 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                 if (current.hasScript(std::string("Health"))) {
                     {
-#line 44 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 44 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                         anito::Script health = current.getScript(std::string("Health"));
-#line 45 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 45 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                         if ((!health.callBool(std::string("IsDepleted")))) {
                             {
-#line 46 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 46 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                                 health.call(std::string("TakeDamage"), damage);
                             }
                         }
-#line 48 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 48 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                         break;
                     }
                 }
-#line 50 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 50 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                 current = current.parent();
             }
         }
-#line 53 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 53 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         spent = true;
-#line 54 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 54 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         gameObject.destroy();
     }
 
-#line 57 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 57 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
     void OnUpdate(float dt) override {
         (void)dt;
-#line 58 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 58 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         if (spent) {
             {
-#line 58 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 58 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                 return;
             }
         }
-#line 59 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 59 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         age += dt;
-#line 60 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 60 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
         if ((age >= lifetime)) {
             {
-#line 61 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 61 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                 spent = true;
-#line 62 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
+#line 62 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipProjectile.ascript"
                 gameObject.destroy();
             }
         }
@@ -1117,52 +1117,52 @@ public:
           fireInterval(*static_cast<float*>(ctx.fields[4])),
           muzzleOffset(*static_cast<anito::Vec3*>(ctx.fields[5])) {}
 
-#line 11 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 11 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
     void OnUpdate(float dt) override {
         (void)dt;
-#line 12 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 12 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         cooldown = anito::Mathf::max(0.0f, (cooldown - dt));
     }
 
-#line 16 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 16 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
     void Shoot() {
-#line 17 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 17 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         if ((cooldown > 0.0f)) {
             {
-#line 17 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 17 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
                 return;
             }
         }
-#line 19 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 19 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         anito::Transform ownerTransform = gameObject.transform();
-#line 20 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 20 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         anito::Quat rotation = ownerTransform.rotation();
-#line 21 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 21 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         anito::Vec3 forward = (rotation * anito::Vec3{static_cast<float>(0.0f), static_cast<float>(0.0f), static_cast<float>(1.0f)});
-#line 23 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 23 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         anito::GameObject projectile = anito::Scene::createPrimitive(std::string("sphere"), anito::Scene::none());
-#line 24 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 24 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         projectile.setName(std::string("Projectile"));
-#line 25 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 25 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         projectile.transform().setPosition((ownerTransform.position() + (rotation * muzzleOffset)));
-#line 26 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 26 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         projectile.transform().setLocalScale(anito::Vec3{static_cast<float>(projectileScale), static_cast<float>(projectileScale), static_cast<float>(projectileScale)});
-#line 28 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 28 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         anito::Script projectileScript = projectile.addScript(std::string("ShipProjectile"));
-#line 29 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 29 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         projectileScript.call(std::string("Launch"), forward, projectileSpeed, damage, projectileLifetime, gameObject);
-#line 32 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 32 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         projectile.addRigidbody(1.0f);
-#line 33 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 33 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         projectile.addSphereCollider(1.0f);
-#line 35 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 35 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         cooldown = fireInterval;
-#line 37 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 37 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         anito::AudioSource audio = gameObject.audioSource();
-#line 38 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 38 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
         if (audio.valid()) {
             {
-#line 38 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
+#line 38 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/ShipWeapon.ascript"
                 audio.play();
             }
         }
@@ -1204,106 +1204,106 @@ public:
           maxScale(*static_cast<float*>(ctx.fields[7])),
           smoothness(*static_cast<float*>(ctx.fields[8])) {}
 
-#line 20 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 20 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
     float Drive(float current, float speed, float dt) {
         (void)current;
         (void)speed;
         (void)dt;
-#line 21 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 21 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         float s = speed;
-#line 22 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 22 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         if (invertDirection) {
             {
-#line 22 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 22 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
                 s = (-s);
             }
         }
-#line 23 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 23 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         float t = 0.0f;
-#line 24 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 24 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         if ((maxSpeed > 0.0f)) {
             {
-#line 24 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 24 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
                 t = anito::Mathf::clamp01((s / maxSpeed));
             }
         }
-#line 25 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 25 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         float desired = anito::Mathf::lerp(minScale, maxScale, t);
-#line 26 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 26 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         float blend = 1.0f;
-#line 27 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 27 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         if ((smoothness > 0.0f)) {
             {
-#line 27 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 27 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
                 blend = (1.0f - anito::Mathf::exp(((-smoothness) * dt)));
             }
         }
-#line 28 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 28 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         return anito::Mathf::lerp(current, desired, blend);
     }
 
-#line 31 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 31 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
     void OnUpdate(float dt) override {
         (void)dt;
-#line 32 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 32 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         if ((!anito::ResolveTransformField(_f_target).valid())) {
             {
-#line 32 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 32 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
                 return;
             }
         }
-#line 33 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 33 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         if ((dt <= 0.0f)) {
             {
-#line 33 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 33 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
                 return;
             }
         }
-#line 35 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 35 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         anito::Transform tracked = gameObject.transform();
-#line 36 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 36 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         anito::Vec3 position = tracked.position();
-#line 37 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 37 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         if ((!hasLastPosition)) {
             {
-#line 38 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 38 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
                 lastPosition = position;
-#line 39 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 39 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
                 hasLastPosition = true;
-#line 40 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 40 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
                 return;
             }
         }
-#line 43 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 43 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         anito::Vec3 velocity = (((position - lastPosition)) / dt);
-#line 44 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 44 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         lastPosition = position;
-#line 47 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 47 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         anito::Vec3 localVelocity = (tracked.rotation().inverse() * velocity);
-#line 48 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 48 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         anito::Vec3 scale = anito::ResolveTransformField(_f_target).localScale();
-#line 49 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 49 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         if (scaleX) {
             {
-#line 49 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 49 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
                 scale.x = Drive(scale.x, localVelocity.x, dt);
             }
         }
-#line 50 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 50 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         if (scaleY) {
             {
-#line 50 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 50 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
                 scale.y = Drive(scale.y, localVelocity.y, dt);
             }
         }
-#line 51 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 51 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         if (scaleZ) {
             {
-#line 51 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 51 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
                 scale.z = Drive(scale.z, localVelocity.z, dt);
             }
         }
-#line 52 "C:/Users/Alfon/source/repos/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
+#line 52 "C:/Users/Dwight/OneDrive/Documents/game lab/AnitoTracerRebuild_Projects/Spaceship/Scripts/VelocityAxisScaler.ascript"
         anito::ResolveTransformField(_f_target).setLocalScale(scale);
     }
 
